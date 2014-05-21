@@ -71,6 +71,8 @@
 
 			$('.mentions-card-stats li').tooltip();
 
+			utils.makeNumbersHumanReadable($('.mentions-card-stats li span'));
+
 			$('.mentions-card-chat').off('click.card').on('click.card', function(e) {
 				var card = $(e.currentTarget).parents('.mentions-card');
 				app.openChat(card.data('username'), card.data('uid'));
