@@ -1,0 +1,71 @@
+.mentions-card {
+  .mentions-card-img-container {
+    display: inline-block;
+    float: left;
+    height: 50px;
+    width: 50px;
+
+    img {
+      width: 50px;
+    }
+  }
+
+  .mentions-card-main {
+    width: 100%;
+    height: auto;
+    background: #fff;
+    float: left;
+
+    h4 {
+      .h4 !important;
+      margin: 10px 0 !important;
+      float: left !important;
+      width: auto !important;
+    }
+
+    ul {
+      float: right;
+      margin: 0px;
+      padding: 0px;
+
+      li {
+        padding: 4px 12px;
+        margin-top: 2px;
+        list-style: none;
+        float: left;
+
+        a {
+          color: @gray;
+
+          &:hover {
+            color: @gray-dark;
+          }
+        }
+
+        &:last-child {
+          border-right: none;
+        }
+      }
+    }
+  }
+
+  .mentions-card-stats {
+    display: inline-block;
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 190px;
+
+    li {
+      float: left;
+      list-style: none outside none;
+      padding: 6px 15px;
+      text-align: center;
+      width: 25%;
+
+      display: inline-block;
+      font-size: 13px;
+    }
+  }
+}
+
