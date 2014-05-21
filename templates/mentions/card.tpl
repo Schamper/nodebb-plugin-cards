@@ -4,10 +4,10 @@
     </div>
 
     <ul class="mentions-card-stats">
-        <li title="Reputation"><i class="fa fa-star"></i> {reputation}</li>
-        <li title="Posts"><i class="fa fa-pencil"></i> {postcount}</li>
-        <li title="Followers"><i class="fa fa-users"></i> {followerCount}</li>
-        <li title="Profile views"><i class="fa fa-eye"></i> {profileviews}</li>
+        <li title="Reputation"><i class="fa fa-star"></i><br>{reputation}</li>
+        <li title="Posts"><i class="fa fa-pencil"></i><br>{postcount}</li>
+        <li title="Followers"><i class="fa fa-users"></i><br>{followerCount}</li>
+        <li title="Profile views"><i class="fa fa-eye"></i><br>{profileviews}</li>
     </ul>
 
     <div class="mentions-card-main">
