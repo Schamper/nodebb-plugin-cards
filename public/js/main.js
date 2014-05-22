@@ -36,6 +36,12 @@
 					}
 				});
 			});
+
+			$(window).on('action:ajaxify.start', function() {
+				if (currentCard) {
+					destroyCard(currentCard);
+				}
+			});
 		});
 	});
 
@@ -45,6 +51,10 @@
 	}
 
 	function createCard(target, url) {
+		if (currentCard) {
+			destroyCard(currentCard);
+		}
+
 		var api = '/api' + url;
 		$.get(api, function(result) {
 			result.name = result.fullname || result.username;
