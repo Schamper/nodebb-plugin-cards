@@ -1,22 +1,28 @@
 (function(window) {
-	var delay, cardTpl, currentCard, destroyDelay;
+	var delay, cardTpl, currentCard, destroyDelay,
+		events = 'mouseenter.card mouseleave.card',
+		selector = 'a[href*="/user/"]:not(.mentions-card-img-container a)';
+
 	$(document).ready(function() {
 		window.ajaxify.loadTemplate('mentions/card', function(tpl) {
 			cardTpl = tpl;
 
 			$(window).on('action:ajaxify.end', function() {
-				$('.container').off("mouseenter.card mouseleave.card", ".plugin-mentions-a").on("mouseenter.card mouseleave.card", ".plugin-mentions-a", function(e){
+				$('.container').off(events, selector).on(events, selector, function(e){
 					var target = $(e.currentTarget);
+					if (target.children('img')) {
+						target.children('img').tooltip('destroy');
+					}
 					if (e.type === "mouseenter" && !target.is(currentCard)) {
 						delay = setTimeout(function() {
-							createCard(target, target.attr('href'));
+							createCard(target, target.attr('href').match(/\/user\/.+/)[0]);
 						}, 500);
 					} else {
 						if (target.is(currentCard)) {
 							destroyDelay = setTimeout(function() {
 								destroyCard(target);
 							}, 500);
-							target.next('.popover').off("mouseenter.card mouseleave.card").on("mouseenter.card mouseleave.card", function(e) {
+							target.data('bs.popover')['$tip'].off(events).on(events, function(e) {
 								if (e.type === "mouseenter") {
 									clearTimeout(destroyDelay);
 								} else {
@@ -65,8 +71,9 @@
 			target.popover({
 				html: true,
 				content: html,
-				placement: "top",
-				trigger: "manual"
+				placement: 'top',
+				trigger: 'manual',
+				container: 'body'
 			}).popover('show');
 
 			$('.mentions-card-stats li').tooltip();
@@ -80,5 +87,9 @@
 			});
 			currentCard = target;
 		});
+	}
+
+	app.createUserTooltips = function() {
+		//so metal
 	}
 })(window);
