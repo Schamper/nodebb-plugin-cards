@@ -9,31 +9,36 @@
 
 			$(window).on('action:ajaxify.end', function() {
 				$('.container').off(events, selector).on(events, selector, function(e){
-					var target = $(e.currentTarget);
-					if (target.children('img')) {
-						target.children('img').tooltip('destroy');
-					}
-					if (e.type === "mouseenter" && !target.is(currentCard)) {
-						delay = setTimeout(function() {
-							createCard(target, target.attr('href').match(/\/user\/.+/)[0]);
-						}, 500);
-					} else {
-						if (target.is(currentCard)) {
-							destroyDelay = setTimeout(function() {
-								destroyCard(target);
-							}, 500);
-							target.data('bs.popover')['$tip'].off(events).on(events, function(e) {
-								if (e.type === "mouseenter") {
-									clearTimeout(destroyDelay);
-								} else {
-									destroyDelay = setTimeout(function() {
-										destroyCard(target);
-									}, 500);
-								}
-							});
+					var target = $(e.currentTarget),
+						href = target.attr('href').match(/\/user\/\w+$/);
+
+					if (href) {
+						if (target.children('img')) {
+							target.children('img').tooltip('destroy');
 						}
-						clearTimeout(delay);
+						if (e.type === "mouseenter" && !target.is(currentCard)) {
+							delay = setTimeout(function() {
+								createCard(target, href);
+							}, 500);
+						} else {
+							if (target.is(currentCard)) {
+								destroyDelay = setTimeout(function() {
+									destroyCard(target);
+								}, 500);
+								target.data('bs.popover')['$tip'].off(events).on(events, function(e) {
+									if (e.type === "mouseenter") {
+										clearTimeout(destroyDelay);
+									} else {
+										destroyDelay = setTimeout(function() {
+											destroyCard(target);
+										}, 500);
+									}
+								});
+							}
+							clearTimeout(delay);
+						}
 					}
+
 				});
 			});
 
