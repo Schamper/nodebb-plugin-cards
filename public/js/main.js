@@ -5,7 +5,7 @@
 			cardTpl = tpl;
 
 			$(window).on('action:ajaxify.end', function() {
-				$('.plugin-mentions-a').off("mouseenter.card mouseleave.card").on("mouseenter.card mouseleave.card", function(e){
+				$('.container').off("mouseenter.card mouseleave.card", ".plugin-mentions-a").on("mouseenter.card mouseleave.card", ".plugin-mentions-a", function(e){
 					var target = $(e.currentTarget);
 					if (e.type === "mouseenter" && !target.is(currentCard)) {
 						delay = setTimeout(function() {
