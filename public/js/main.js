@@ -1,10 +1,10 @@
 (function(window) {
 	var delay, cardTpl, currentCard, destroyDelay,
 		events = 'mouseenter.card mouseleave.card',
-		selector = 'a[href*="/user/"]:not(.mentions-card-img-container a)';
+		selector = 'a[href*="/user/"]:not(.profile-card-img-container a)';
 
 	$(document).ready(function() {
-		window.ajaxify.loadTemplate('mentions/card', function(tpl) {
+		window.ajaxify.loadTemplate('cards/profile', function(tpl) {
 			cardTpl = tpl;
 
 			$(window).on('action:ajaxify.end', function() {
@@ -91,12 +91,12 @@
 				container: 'body'
 			}).popover('show');
 
-			$('.mentions-card-stats li').tooltip();
+			$('.profile-card-stats li').tooltip();
 
-			utils.makeNumbersHumanReadable($('.mentions-card-stats li span'));
+			utils.makeNumbersHumanReadable($('.profile-card-stats li span'));
 
-			$('.mentions-card-chat').off('click.card').on('click.card', function(e) {
-				var card = $(e.currentTarget).parents('.mentions-card');
+			$('.profile-card-chat').off('click.card').on('click.card', function(e) {
+				var card = $(e.currentTarget).parents('.profile-card');
 				app.openChat(card.data('username'), card.data('uid'));
 				return false;
 			});

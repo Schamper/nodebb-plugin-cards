@@ -1,8 +1,8 @@
 {
-	"id": "nodebb-plugin-mentions-cards",
-	"name": "Profile Card",
-	"description": "NodeBB plugin that extends the mentions plugin with hover cards",
-	"url": "https://github.com/Schamper/nodebb-plugin-mentions-cards",
+	"id": "nodebb-plugin-cards",
+	"name": "Hover Cards",
+	"description": "NodeBB plugin that adds a hover card to every profile link",
+	"url": "https://github.com/Schamper/nodebb-plugin-cards",
 	"library": "./library.js",
 	"hooks": [],
 	"staticDirs": {
