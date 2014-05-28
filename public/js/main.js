@@ -56,13 +56,10 @@
 	}
 
 	function createCard(target, url) {
-		if (currentCard) {
-			destroyCard(currentCard);
-		}
-
 		var api = '/api' + url;
 		$.get(api, function(result) {
 			result.name = result.fullname || result.username;
+
 			switch (result.status) {
 				case 'online':
 					result.statusTitle = 'Online';
@@ -83,24 +80,31 @@
 
 			var html = window.templates.parse(cardTpl, result);
 
-			target.popover({
-				html: true,
-				content: html,
-				placement: 'top',
-				trigger: 'manual',
-				container: 'body'
-			}).popover('show');
+			if (!target.is(currentCard)) {
+				if (currentCard) {
+					destroyCard(currentCard);
+				}
 
-			$('.profile-card-stats li').tooltip();
+				target.popover({
+					html: true,
+					content: html,
+					placement: 'top',
+					trigger: 'manual',
+					container: 'body'
+				}).popover('show');
 
-			utils.makeNumbersHumanReadable($('.profile-card-stats li span'));
+				$('.profile-card-stats li').tooltip();
 
-			$('.profile-card-chat').off('click.card').on('click.card', function(e) {
-				var card = $(e.currentTarget).parents('.profile-card');
-				app.openChat(card.data('username'), card.data('uid'));
-				return false;
-			});
-			currentCard = target;
+				utils.makeNumbersHumanReadable($('.profile-card-stats li span'));
+
+				$('.profile-card-chat').off('click.card').on('click.card', function(e) {
+					var card = $(e.currentTarget).parents('.profile-card');
+					app.openChat(card.data('username'), card.data('uid'));
+					return false;
+				});
+
+				currentCard = target;
+			}
 		});
 	}
 
