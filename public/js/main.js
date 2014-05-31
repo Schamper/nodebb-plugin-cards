@@ -1,7 +1,8 @@
 (function(window) {
 	var delay, cardTpl, currentCard, destroyDelay,
 		events = 'mouseenter.card mouseleave.card',
-		selector = 'a[href*="/user/"]:not(.profile-card-img-container a)';
+		selector = 'a[href*="/user/"]:not(.profile-card-img-container a)',
+		regex = /(\/user\/([^/]+))(?:\/|$)/;
 
 	$(document).ready(function() {
 		window.ajaxify.loadTemplate('cards/profile', function(tpl) {
@@ -10,15 +11,15 @@
 			$(window).on('action:ajaxify.end', function() {
 				$('.container').off(events, selector).on(events, selector, function(e){
 					var target = $(e.currentTarget),
-						href = target.attr('href').match(/\/user\/\w+$/);
+						href = regex.exec(target.attr('href'));
 
-					if (href) {
+					if (href && (!utils.invalidLatinChars.test(href[2]) && !utils.invalidUnicodeChars.test(href[2]))) {
 						if (target.children('img')) {
 							target.children('img').tooltip('destroy');
 						}
 						if (e.type === "mouseenter" && !target.is(currentCard)) {
 							delay = setTimeout(function() {
-								createCard(target, href);
+								createCard(target, href[1]);
 							}, 500);
 						} else {
 							if (target.is(currentCard)) {
@@ -60,51 +61,37 @@
 		$.get(api, function(result) {
 			result.name = result.fullname || result.username;
 
-			switch (result.status) {
-				case 'online':
-					result.statusTitle = 'Online';
-					break;
-				case 'away':
-					result.statusTitle = 'Away';
-					break;
-				case 'dnd':
-					result.statusTitle = 'Do not Disturb';
-					break;
-				case 'offline':
-					result.statusTitle = 'Offline';
-					break;
-				default:
-					result.statusTitle = 'Offline';
-					break
-			}
+			translator.translate('[[global:' + result.status + ']]', function(translated) {
+				result.statusTitle = translated;
 
-			var html = window.templates.parse(cardTpl, result);
+				var html = window.templates.parse(cardTpl, result);
 
-			if (!target.is(currentCard)) {
-				if (currentCard) {
-					destroyCard(currentCard);
+				if (!target.is(currentCard)) {
+					if (currentCard) {
+						destroyCard(currentCard);
+					}
+
+					target.popover({
+						html: true,
+						content: html,
+						placement: 'top',
+						trigger: 'manual',
+						container: 'body'
+					}).popover('show');
+
+					$('.profile-card-stats li').tooltip();
+
+					utils.makeNumbersHumanReadable($('.profile-card-stats li span'));
+
+					$('.profile-card-chat').off('click.card').on('click.card', function(e) {
+						var card = $(e.currentTarget).parents('.profile-card');
+						app.openChat(card.data('username'), card.data('uid'));
+						return false;
+					});
+
+					currentCard = target;
 				}
-
-				target.popover({
-					html: true,
-					content: html,
-					placement: 'top',
-					trigger: 'manual',
-					container: 'body'
-				}).popover('show');
-
-				$('.profile-card-stats li').tooltip();
-
-				utils.makeNumbersHumanReadable($('.profile-card-stats li span'));
-
-				$('.profile-card-chat').off('click.card').on('click.card', function(e) {
-					var card = $(e.currentTarget).parents('.profile-card');
-					app.openChat(card.data('username'), card.data('uid'));
-					return false;
-				});
-
-				currentCard = target;
-			}
+			});
 		});
 	}
 
