@@ -9,7 +9,7 @@
 			cardTpl = tpl;
 
 			$(window).on('action:ajaxify.end', function() {
-				$('.container').off(events, selector).on(events, selector, function(e){
+				$(document.body).off(events, selector).on(events, selector, function(e){
 					var target = $(e.currentTarget),
 						href = regex.exec(target.attr('href'));
 
@@ -60,12 +60,9 @@
 		var api = '/api' + url;
 		$.get(api, function(result) {
 			result.name = result.fullname || result.username;
+			var html = window.templates.parse(cardTpl, result);
 
-			translator.translate('[[global:' + result.status + ']]', function(translated) {
-				result.statusTitle = translated;
-
-				var html = window.templates.parse(cardTpl, result);
-
+			translator.translate(html, function(translated) {
 				if (!target.is(currentCard)) {
 					if (currentCard) {
 						destroyCard(currentCard);
@@ -73,7 +70,7 @@
 
 					target.popover({
 						html: true,
-						content: html,
+						content: translated,
 						placement: 'top',
 						trigger: 'manual',
 						container: 'body'
