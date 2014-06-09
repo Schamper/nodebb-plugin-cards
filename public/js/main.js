@@ -1,49 +1,58 @@
 (function(window) {
 	var delay, cardTpl, currentCard, destroyDelay,
 		events = 'mouseenter.card mouseleave.card',
+		exitEvent = 'click.card',
 		selector = 'a[href*="/user/"]:not(.profile-card-img-container a)',
-		regex = /(\/user\/([^/]+))(?:\/|$)/;
+		exitSelector = 'body:not(".profile-card")',
+		regex = /(\/user\/([^/]+))(?:\/$|$)/;
 
 	$(document).ready(function() {
+		//Preload the card template
 		window.ajaxify.loadTemplate('cards/profile', function(tpl) {
 			cardTpl = tpl;
 
-			$(window).on('action:ajaxify.end', function() {
-				$(document.body).off(events, selector).on(events, selector, function(e){
-					var target = $(e.currentTarget),
-						href = regex.exec(target.attr('href'));
+			//Listen for events on body, we don't have to re-add on every ajaxify
+			$(document.body).off(events, selector).on(events, selector, function(e) {
+				var target = $(e.currentTarget),
+					href = regex.exec(target.attr('href'));
 
-					if (href && (!utils.invalidLatinChars.test(href[2]) && !utils.invalidUnicodeChars.test(href[2]))) {
-						if (target.children('img')) {
-							target.children('img').tooltip('destroy');
-						}
-						if (e.type === "mouseenter" && !target.is(currentCard)) {
-							delay = setTimeout(function() {
-								createCard(target, href[1]);
-							}, 500);
-						} else {
-							if (target.is(currentCard)) {
-								destroyDelay = setTimeout(function() {
-									destroyCard(target);
-								}, 500);
-								target.data('bs.popover')['$tip'].off(events).on(events, function(e) {
-									if (e.type === "mouseenter") {
-										clearTimeout(destroyDelay);
-									} else {
-										destroyDelay = setTimeout(function() {
-											destroyCard(target);
-										}, 500);
-									}
-								});
-							}
-							clearTimeout(delay);
-						}
+				//Check if it's a valid link
+				if (href && (!utils.invalidLatinChars.test(href[2]) && !utils.invalidUnicodeChars.test(href[2]))) {
+
+					if (target.children('img')) {
+						//Destroy tooltips added by NodeBB
+						target.children('img').tooltip('destroy');
 					}
 
-				});
+					if (e.type === "mouseenter" && !target.is(currentCard)) {
+						//If it's a mouseenter event, set a timeout to create a new card
+						delay = setTimeout(function() {
+							createCard(target, href[1]);
+						}, 500);
+					} else {
+						//Otherwise add some handlers for destroying a card
+						if (target.is(currentCard)) {
+							destroyDelay = setTimeout(function() {
+								destroyCard(target);
+							}, 500);
+							target.data('bs.popover')['$tip'].off(events).on(events, function(e) {
+								if (e.type === "mouseenter") {
+									clearTimeout(destroyDelay);
+								} else {
+									destroyDelay = setTimeout(function() {
+										destroyCard(target);
+									}, 500);
+								}
+							});
+						}
+						//Also clear the timeout for creating a new card
+						clearTimeout(delay);
+					}
+				}
 			});
 
 			$(window).on('action:ajaxify.start', function() {
+				//Destroy any cards before ajaxifying
 				if (currentCard) {
 					destroyCard(currentCard);
 				}
@@ -64,10 +73,12 @@
 
 			translator.translate(html, function(translated) {
 				if (!target.is(currentCard)) {
+					//If there's an existing card, destroy it
 					if (currentCard) {
 						destroyCard(currentCard);
 					}
 
+					//Create card
 					target.popover({
 						html: true,
 						content: translated,
@@ -87,12 +98,23 @@
 					});
 
 					currentCard = target;
+
+					$('html').off(exitEvent).on(exitEvent, function() {
+						if (currentCard) {
+							destroyCard(currentCard);
+						}
+					});
+
+					$('.profile-card').off(exitEvent).on(exitEvent, function(e) {
+						e.stopPropagation();
+					});
 				}
 			});
 		});
 	}
 
 	app.createUserTooltips = function() {
+		//override with empty function because we don't want this function to execute
 		//so metal
 	}
 })(window);
