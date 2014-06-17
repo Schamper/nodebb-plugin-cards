@@ -1,6 +1,6 @@
 {
 	"name": "nodebb-plugin-cards",
-	"version": "0.0.9",
+	"version": "0.1.0",
 	"description": "NodeBB plugin that extends the mentions plugin with hover cards",
 	"main": "library.js",
 	"scripts": {
