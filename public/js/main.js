@@ -52,6 +52,10 @@
 			});
 
 			$(window).on('action:ajaxify.start', function() {
+				if (delay) {
+					clearTimeout(delay);
+					delay =  0;
+				}
 				//Destroy any cards before ajaxifying
 				if (currentCard) {
 					destroyCard(currentCard);
