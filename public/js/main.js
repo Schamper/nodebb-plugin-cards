@@ -1,5 +1,5 @@
 (function(window) {
-	var delay, cardTpl, currentCard, destroyDelay,
+	var delay, cardTpl, targetCard, currentCard, destroyDelay,
 		events = 'mouseenter.card mouseleave.card',
 		exitEvent = 'click.card',
 		selector = 'a[href*="/user/"]:not(.profile-card-img-container a)',
@@ -29,6 +29,7 @@
 						delay = setTimeout(function() {
 							createCard(target, href[1]);
 						}, 500);
+						targetCard = target;
 					} else {
 						//Otherwise add some handlers for destroying a card
 						if (target.is(currentCard)) {
@@ -47,6 +48,7 @@
 						}
 						//Also clear the timeout for creating a new card
 						clearTimeout(delay);
+						targetCard = null;
 					}
 				}
 			});
@@ -54,12 +56,13 @@
 			$(window).on('action:ajaxify.start', function() {
 				if (delay) {
 					clearTimeout(delay);
-					delay =  0;
+					delay = 0;
 				}
 				//Destroy any cards before ajaxifying
 				if (currentCard) {
 					destroyCard(currentCard);
 				}
+				targetCard = null;
 			});
 		});
 	});
@@ -76,7 +79,8 @@
 			var html = window.templates.parse(cardTpl, result);
 
 			translator.translate(html, function(translated) {
-				if (!target.is(currentCard)) {
+				//If target is not the currentCard and if the target is the targetCard
+				if (!target.is(currentCard) && target.is(targetCard)) {
 					//If there's an existing card, destroy it
 					if (currentCard) {
 						destroyCard(currentCard);
