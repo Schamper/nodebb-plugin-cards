@@ -74,50 +74,54 @@
 
 	function createCard(target, url) {
 		var api = '/api' + url;
-		$.get(api, function(result) {
-			result.name = result.fullname || result.username;
-			var html = window.templates.parse(cardTpl, result);
+		$.ajax({
+			url: api,
+			success: function(result) {
+				result.name = result.fullname || result.username;
+				var html = window.templates.parse(cardTpl, result);
 
-			translator.translate(html, function(translated) {
-				//If target is not the currentCard and if the target is the targetCard
-				if (!target.is(currentCard) && target.is(targetCard)) {
-					//If there's an existing card, destroy it
-					if (currentCard) {
-						destroyCard(currentCard);
-					}
-
-					//Create card
-					target.popover({
-						html: true,
-						content: translated,
-						placement: 'top',
-						trigger: 'manual',
-						container: 'body'
-					}).popover('show');
-
-					$('.profile-card-stats li').tooltip();
-
-					utils.makeNumbersHumanReadable($('.profile-card-stats li span'));
-
-					$('.profile-card-chat').off('click.card').on('click.card', function(e) {
-						var card = $(e.currentTarget).parents('.profile-card');
-						app.openChat(card.data('username'), card.data('uid'));
-						return false;
-					});
-
-					currentCard = target;
-
-					$('html').off(exitEvent).on(exitEvent, function() {
+				translator.translate(html, function(translated) {
+					//If target is not the currentCard and if the target is the targetCard
+					if (!target.is(currentCard) && target.is(targetCard)) {
+						//If there's an existing card, destroy it
 						if (currentCard) {
 							destroyCard(currentCard);
 						}
-					});
 
-					$('.profile-card').off(exitEvent).on(exitEvent, function(e) {
-						e.stopPropagation();
-					});
-				}
-			});
+						//Create card
+						target.popover({
+							html: true,
+							content: translated,
+							placement: 'top',
+							trigger: 'manual',
+							container: 'body'
+						}).popover('show');
+
+						$('.profile-card-stats li').tooltip();
+
+						utils.makeNumbersHumanReadable($('.profile-card-stats li span'));
+
+						$('.profile-card-chat').off('click.card').on('click.card', function(e) {
+							var card = $(e.currentTarget).parents('.profile-card');
+							app.openChat(card.data('username'), card.data('uid'));
+							return false;
+						});
+
+						currentCard = target;
+
+						$('html').off(exitEvent).on(exitEvent, function() {
+							if (currentCard) {
+								destroyCard(currentCard);
+							}
+						});
+
+						$('.profile-card').off(exitEvent).on(exitEvent, function(e) {
+							e.stopPropagation();
+						});
+					}
+				});
+			},
+			cache: false
 		});
 	}
 
