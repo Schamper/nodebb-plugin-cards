@@ -11,7 +11,7 @@
     </ul>
 
     <div class="profile-card-main">
-        <h4>{name}</h4>
+        <h4>{username}</h4>
 
         <ul>
             <li><i title="[[global:{status}]]" class="account-online-status fa fa-circle status {status}"></i></li>
