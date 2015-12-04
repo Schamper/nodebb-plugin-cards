@@ -1,8 +1,12 @@
+"use strict";
+
+/* globals app, utils, $ */
+
 (function(window) {
 	var delay, targetCard, currentCard, destroyDelay,
 		events = 'mouseenter.card mouseleave.card',
 		exitEvent = 'click.card',
-		selector = 'a[href*="/user/"]:not(.profile-card-img-container a)',
+		selector = 'a[href*="/user/"]:not(.profile-card a)',
 		exitSelector = 'body:not(".profile-card")',
 		regex = /(\/user\/([^/]+))(?:\/$|$)/;
 
@@ -14,7 +18,6 @@
 
 			//Check if it's a valid link
 			if (href && (!utils.invalidLatinChars.test(href[2]) && !utils.invalidUnicodeChars.test(href[2]))) {
-
 				if (target.children('img')) {
 					//Destroy tooltips added by NodeBB
 					target.children('img').tooltip('destroy');
@@ -32,6 +35,7 @@
 						destroyDelay = setTimeout(function() {
 							destroyCard(target);
 						}, 500);
+
 						target.data('bs.popover')['$tip'].off(events).on(events, function(e) {
 							if (e.type === "mouseenter") {
 								clearTimeout(destroyDelay);
@@ -42,6 +46,7 @@
 							}
 						});
 					}
+
 					//Also clear the timeout for creating a new card
 					clearTimeout(delay);
 					targetCard = null;
@@ -54,10 +59,12 @@
 				clearTimeout(delay);
 				delay = 0;
 			}
+
 			//Destroy any cards before ajaxifying
 			if (currentCard) {
 				destroyCard(currentCard);
 			}
+
 			targetCard = null;
 		});
 	});
@@ -73,47 +80,45 @@
 			url: api,
 			success: function(result) {
 				result.name = result.fullname || result.username;
-				window.templates.parse('cards/profile', result, function(html) {
-					translator.translate(html, function(translated) {
-						//If target is not the currentCard and if the target is the targetCard
-						if (!target.is(currentCard) && target.is(targetCard)) {
-							//If there's an existing card, destroy it
+				app.parseAndTranslate('cards/profile', result, function(html) {
+					//If target is not the currentCard and if the target is the targetCard
+					if (!target.is(currentCard) && target.is(targetCard)) {
+						//If there's an existing card, destroy it
+						if (currentCard) {
+							destroyCard(currentCard);
+						}
+
+						//Create card
+						target.popover({
+							html: true,
+							content: html,
+							placement: 'top',
+							trigger: 'manual',
+							container: 'body'
+						}).popover('show');
+
+						$('.profile-card-stats li').tooltip();
+
+						utils.makeNumbersHumanReadable($('.profile-card-stats li span'));
+
+						$('.profile-card-chat').off('click.card').on('click.card', function(e) {
+							var card = $(e.currentTarget).parents('.profile-card');
+							app.openChat(card.data('username'), card.data('uid'));
+							return false;
+						});
+
+						currentCard = target;
+
+						$('html').off(exitEvent).on(exitEvent, function() {
 							if (currentCard) {
 								destroyCard(currentCard);
 							}
+						});
 
-							//Create card
-							target.popover({
-								html: true,
-								content: translated,
-								placement: 'top',
-								trigger: 'manual',
-								container: 'body'
-							}).popover('show');
-
-							$('.profile-card-stats li').tooltip();
-
-							utils.makeNumbersHumanReadable($('.profile-card-stats li span'));
-
-							$('.profile-card-chat').off('click.card').on('click.card', function(e) {
-								var card = $(e.currentTarget).parents('.profile-card');
-								app.openChat(card.data('username'), card.data('uid'));
-								return false;
-							});
-
-							currentCard = target;
-
-							$('html').off(exitEvent).on(exitEvent, function() {
-								if (currentCard) {
-									destroyCard(currentCard);
-								}
-							});
-
-							$('.profile-card').off(exitEvent).on(exitEvent, function(e) {
-								e.stopPropagation();
-							});
-						}
-					});
+						$('.profile-card').off(exitEvent).on(exitEvent, function(e) {
+							e.stopPropagation();
+						});
+					}
 				});
 			},
 			cache: false

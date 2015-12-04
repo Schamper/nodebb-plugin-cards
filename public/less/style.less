@@ -1,12 +1,18 @@
+@picture-size: 50px;
+
 .profile-card {
   .profile-card-img-container {
     display: inline-block;
     float: left;
-    height: 50px;
-    width: 50px;
+    height: @picture-size;
+    width: @picture-size;
 
-    img {
-      width: 50px;
+    img, div {
+      border-radius: 50%;
+      width: 100%;
+      height: 100%;
+      line-height: @picture-size;
+      font-size: 3rem;
     }
   }
 
@@ -25,8 +31,8 @@
 
     ul {
       float: right;
-      margin: 0px;
-      padding: 0px;
+      margin: 0;
+      padding: 0;
 
       li {
         padding: 4px 12px;

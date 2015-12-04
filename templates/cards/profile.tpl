@@ -1,7 +1,11 @@
 <div class="profile-card" data-username="{username}" data-uid="{uid}">
-    <div class="profile-card-img-container">
-        <a href="/user/{userslug}"><img src="{picture}" /></a>
-    </div>
+    <a class="profile-card-img-container" href="/user/{userslug}">
+        <!-- IF picture -->
+        <img class="user-img" title="{username}" src="{picture}"/>
+        <!-- ELSE -->
+        <div class="user-icon" title="{username}" style="background-color: {icon:bgColor};">{icon:text}</div>
+        <!-- ENDIF picture -->
+    </a>
 
     <ul class="profile-card-stats">
         <li title="[[global:reputation]]"><i class="fa fa-star"></i><span title="{reputation}"></span></li>

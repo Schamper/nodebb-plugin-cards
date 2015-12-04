@@ -1,3 +1,1 @@
-var Card = {};
-
-module.exports = Card;
+module.exports = {};
