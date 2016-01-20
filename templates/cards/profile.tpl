@@ -19,7 +19,7 @@
 
         <ul>
             <li><i title="[[global:{status}]]" class="account-online-status fa fa-circle status {status}"></i></li>
-            <li><a class="profile-card-chat" href="#"><i class="fa fa-comment-o"></i></a></li>
+            <!-- IF !config.disableChat --><li><a class="profile-card-chat" href="#"><i class="fa fa-comment-o"></i></a></li><!-- ENDIF !config.disableChat -->
         </ul>
     </div>
 </div>
