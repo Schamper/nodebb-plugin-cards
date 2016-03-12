@@ -71,8 +71,6 @@
 			$.ajax({
 				url: api,
 				success: function(result) {
-					result.name = result.fullname || result.username;
-
 					app.parseAndTranslate('cards/profile', result, function(cardHTML) {
 						// If target is not the currentCard and if the target is the targetCard
 						if (!target.is(currentCard) && target.is(targetCard)) {
