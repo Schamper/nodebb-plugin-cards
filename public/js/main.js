@@ -88,26 +88,32 @@
 							destroyCard(currentCard);
 						}
 
+						// Bind chat button
+						html.find('[component="account/chat"]').on('click', function() {
+							socket.emit('modules.chats.hasPrivateChat', result.uid, function(err, roomId) {
+								if (err) {
+									return app.alertError(err.message);
+								}
+								if (roomId) {
+									app.openChat(roomId);
+								} else {
+									app.newChat(result.uid);
+								}
+							});
+						});
+
 						//Create card
 						target.popover({
 							html: true,
 							content: html,
-							placement: 'top',
+							placement: calculatePopoverPosition(target),
 							trigger: 'manual',
 							container: 'body'
-						}).popover('show');
+						}).popover('show').data('bs.popover')['$tip'].css('z-index', 1000000);
 
-						$('.profile-card-stats li').tooltip();
-
-						utils.makeNumbersHumanReadable($('.profile-card-stats li span'));
-
-						$('.profile-card-chat').off('click.card').on('click.card', function(e) {
-							var card = $(e.currentTarget).parents('.profile-card');
-							app.openChat(card.data('username'), card.data('uid'));
-							return false;
-						});
-
-						currentCard = target;
+						$('.profile-card .timeago').timeago();
+						$('.card-fab button').dropdown();
+						utils.makeNumbersHumanReadable($('.profile-card .human-readable-number'));
 
 						$('html').off(exitEvent).on(exitEvent, function() {
 							if (currentCard) {
@@ -118,6 +124,8 @@
 						$('.profile-card').off(exitEvent).on(exitEvent, function(e) {
 							e.stopPropagation();
 						});
+
+						currentCard = target;
 					}
 				});
 			},
@@ -128,5 +136,30 @@
 	app.createUserTooltips = function() {
 		//override with empty function because we don't want this function to execute
 		//so metal
+	};
+
+	function calculatePopoverPosition(target){
+		var offset = target.offset();
+		var width = $(document).width();
+		var height = $(document).height();
+
+		if (offset.left > 300) {
+			return 'left';
+		}
+
+		if (width - offset.left > 300) {
+			return 'right';
+		}
+
+		if (offset.top > 400) {
+			return 'top';
+		}
+
+		if (height - offset.top > 400) {
+			return 'bottom';
+		}
+
+		return 'right';
 	}
+
 })(window);

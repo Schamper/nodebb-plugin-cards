@@ -1,77 +1,121 @@
-@picture-size: 50px;
+@avatar-size: 50px;
+@cover-height: 100px;
 
-.profile-card {
-  .profile-card-img-container {
-    display: inline-block;
-    float: left;
-    height: @picture-size;
-    width: @picture-size;
+.profile-card-cover-container {
+  height: @cover-height;
+}
 
-    img, div {
-      border-radius: 50%;
-      width: 100%;
-      height: 100%;
-      line-height: @picture-size;
-      font-size: 3rem;
+.profile-card-cover {
+  height: @cover-height;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: auto;
+  margin-bottom: 1em;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-origin: content-box;
+
+  .card-fab {
+    position: absolute;
+    right: 15px;
+    bottom: -15px;
+
+    .fab {
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      font-size: 10px;
+      color: white;
     }
   }
 
-  .profile-card-main {
-    width: 100%;
-    height: auto;
-    background: #fff;
-    float: left;
 
-    h4 {
-      .h4 !important;
-      margin: 10px 0 !important;
-      float: left !important;
-      width: auto !important;
-    }
+}
 
-    ul {
-      float: right;
-      margin: 0;
-      padding: 0;
+.profile-card-avatar {
+  position: absolute;
+  left: 50%;
+  bottom: -(@avatar-size/2);
+  margin-left: -(@avatar-size/2);
+  border: 2px solid white;
+  border-radius: 50%;
 
-      li {
-        padding: 4px 12px;
-        margin-top: 2px;
-        list-style: none;
-        float: left;
-
-        a {
-          color: @gray;
-
-          &:hover {
-            color: @gray-dark;
-          }
-        }
-      }
-    }
+  .avatar {
+    width: @avatar-size;
+    height: @avatar-size;
+    line-height: @avatar-size;
+    font-size: 3rem;
   }
 
-  .profile-card-stats {
-    display: inline-block;
-    float: left;
-    margin: 0;
-    padding: 0;
-    width: 190px;
+  .status {
+    position: absolute;
+    top: 2px;
+    right: -2px;
+  }
+}
 
-    li {
-      float: left;
-      list-style: none outside none;
-      padding: 6px 0;
-      text-align: center;
-      width: 25%;
+.profile-card-info {
+  .aboutme > p {
+    max-width: 90%;
+    max-height: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #777;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 
+  .fullname {
+    text-align: center;
+    font-size: 20px;
+    color: #777;
+    font-weight: 300;
+    margin-bottom: 6px;
+  }
+
+  .username {
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 0;
+    font-size: 12px;
+  }
+
+  .account-stats {
+    text-align: center;
+    font-size: 20px;
+    line-height: 16px;
+    margin-top: 15px;
+    margin-bottom: -30px;
+
+    .stat {
       display: inline-block;
-      font-size: 13px;
+      min-width: 55px;
+      margin-bottom: 20px;
+    }
 
-      span {
-        display: block;
-      }
+    .stat-label {
+      font-size: 9px;
+      font-weight: 100;
+      text-transform: uppercase;
+      color: #777;
+    }
+  }
+
+  .profile-meta {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #777;
+    margin-top: 25px;
+    margin-bottom: 10px;
+
+    strong {
+      color: #333;
     }
   }
 }
 
+.popover {
+  z-index: 1000000;
+}
