@@ -1,12 +1,12 @@
-@avatar-size: 50px;
-@cover-height: 100px;
+@cards-avatar-size: 50px;
+@cards-cover-height: 100px;
 
 .profile-card-cover-container {
-  height: @cover-height;
+  height: @cards-cover-height;
 }
 
 .profile-card-cover {
-  height: @cover-height;
+  height: @cards-cover-height;
   width: 100%;
   position: absolute;
   top: 0;
@@ -37,15 +37,15 @@
 .profile-card-avatar {
   position: absolute;
   left: 50%;
-  bottom: -(@avatar-size/2);
-  margin-left: -(@avatar-size/2);
+  bottom: -(@cards-avatar-size/2);
+  margin-left: -(@cards-avatar-size/2);
   border: 2px solid white;
   border-radius: 50%;
 
   .avatar {
-    width: @avatar-size;
-    height: @avatar-size;
-    line-height: @avatar-size;
+    width: @cards-avatar-size;
+    height: @cards-avatar-size;
+    line-height: @cards-avatar-size;
     font-size: 3rem;
   }
 
