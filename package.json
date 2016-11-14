@@ -1,6 +1,6 @@
 {
-	"name": "nodebb-plugin-cards",
-	"version": "0.2.1",
+	"name": "nodebb-plugin-cards2",
+	"version": "0.2.2",
 	"description": "NodeBB plugin that extends the mentions plugin with hover cards",
 	"main": "library.js",
 	"scripts": {
@@ -8,7 +8,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Schamper/nodebb-plugin-cards"
+		"url": "https://github.com/revir/nodebb-plugin-cards2"
 	},
 	"keywords": [
 		"nodebb",
@@ -16,10 +16,10 @@
 		"profile",
 		"card"
 	],
-	"author": "Schamper <mrwafflewaffle@aim.com>",
+	"author": "River <revir.qing@gmail.com>",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/Schamper/nodebb-plugin-cards/issues"
+		"url": "https://github.com/revir/nodebb-plugin-cards2/issues"
 	},
 	"dependencies": {},
 	"nbbpm": {
