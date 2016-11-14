@@ -65,6 +65,21 @@
 		}
 	}
 
+	function toggleFollow($card, type, uid, username) {
+		socket.emit('user.' + type, {
+			uid: uid
+		}, function(err) {
+			if (err) {
+				return app.alertError(err.message);
+			}
+
+			$card.find('[component="account/follow"]').toggleClass('hide', type === 'follow');
+			$card.find('[component="account/unfollow"]').toggleClass('hide', type === 'unfollow');
+			app.alertSuccess('[[global:alert.' + type + ', ' + username + ']]');
+		});
+		return false;
+	}
+
 	function createCard(target, url) {
 		return setTimeout(function() {
 			var api = '/api' + url;
@@ -91,6 +106,13 @@
 										app.newChat(result.uid);
 									}
 								});
+							});
+							// Bind follow and unfollow
+							cardHTML.find('[component="account/follow"]').on('click', function(){
+								toggleFollow(cardHTML, 'follow', result.uid, result.username);
+							});
+							cardHTML.find('[component="account/unfollow"]').on('click', function(){
+								toggleFollow(cardHTML, 'unfollow', result.uid, result.username);
 							});
 
 							// Create card
