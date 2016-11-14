@@ -73,8 +73,8 @@
 				return app.alertError(err.message);
 			}
 
-			$card.find('[component="account/follow"]').toggleClass('hide', type === 'follow');
-			$card.find('[component="account/unfollow"]').toggleClass('hide', type === 'unfollow');
+			$('[component="account/follow"]').toggleClass('hide', type === 'follow');
+			$('[component="account/unfollow"]').toggleClass('hide', type === 'unfollow');
 			app.alertSuccess('[[global:alert.' + type + ', ' + username + ']]');
 		});
 		return false;
