@@ -59,7 +59,16 @@
 
     <div class="profile-card-info">
         <h1 class="fullname"><!-- IF fullname -->{fullname}<!-- ELSE -->{username}<!-- ENDIF fullname --></h1>
-        <h2 class="username"><!-- IF !banned -->@{username}<!-- ELSE -->[[user:banned]]<!-- ENDIF !banned --></h2>
+
+        <div class="text-center">
+            <!-- IF !isSelf -->
+            <a component="account/follow" href="#" class="btn btn-success btn-sm <!-- IF isFollowing -->hide<!-- ENDIF isFollowing -->">[[user:follow]]</a>
+            <a component="account/unfollow" href="#" class="btn btn-warning btn-sm <!-- IF !isFollowing -->hide<!-- ENDIF !isFollowing -->">[[user:unfollow]]</a>
+            <!-- IF !config.disableChat -->
+            <a component="account/chat" href="#" class="btn btn-primary btn-sm">[[user:chat]]</a>
+            <!-- ENDIF !config.disableChat -->
+            <!-- ENDIF !isSelf -->
+        </div>
 
         <!-- IF aboutme -->
         <span class="text-center aboutme">{aboutme}</span>
