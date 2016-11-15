@@ -22,7 +22,7 @@
 
 			// Destroy any cards before ajaxifying
 			if (currentCard) {
-				destroyCard(currentCard);
+				destroyCard(currentCard, true);
 			}
 
 			targetCard = null;
@@ -128,11 +128,16 @@
 		}, 500);
 	}
 
-	function destroyCard(target) {
-		return setTimeout(function() {
+	function destroyCard(target, instantly) {
+		if (instantly) {
 			target.popover('destroy');
 			currentCard = null;
-		}, 500);
+		} else {
+			return setTimeout(function() {
+				target.popover('destroy');
+				currentCard = null;
+			}, 500);
+		}
 	}
 
 	function calculatePopoverPosition(target){
