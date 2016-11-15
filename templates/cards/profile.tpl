@@ -87,7 +87,7 @@
 
             <div class="stat">
                 <div class="human-readable-number" title="{profileviews}">{profileviews}</div>
-                <span class="stat-label">views</span>
+                <span class="stat-label">[[user:profile_views]]</span>
             </div>
 
             <div class="stat">
