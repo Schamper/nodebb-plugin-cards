@@ -97,31 +97,23 @@
         </div>
 
         <div class="text-center profile-meta">
-            <span>[[user:joined]]</span>
-            <strong class="timeago" title="{joindateISO}"></strong><br />
-
-            <span>[[user:lastonline]]</span>
-            <strong class="timeago" title="{lastonlineISO}"></strong><br />
-
             <!-- IF email -->
-            <span>[[user:email]]</span>
+            <span><i class="fa fa-envelope-open-o" aria-hidden="true"></i></span>
             <strong><i class="fa fa-eye-slash {emailClass}" title="[[user:email_hidden]]"></i> {email}</strong>
+            <br/>
             <!-- ENDIF email -->
 
             <!-- IF websiteName -->
-            <span>[[user:website]]</span>
-            <strong><a href="{websiteLink}" rel="nofollow">{websiteName}</a></strong>
+            <span><i class="fa fa-edge" aria-hidden="true"></i></span>
+            <strong><a href="{websiteLink}" target="_blank" rel="nofollow">{websiteName}</a></strong>
+            <br/>
             <!-- ENDIF websiteName -->
 
             <!-- IF location -->
-            <span>[[user:location]]</span>
+            <span><i class="fa fa-location-arrow" aria-hidden="true"></i></span>
             <strong>{location}</strong>
+            <br/>
             <!-- ENDIF location -->
-
-            <!-- IF age -->
-            <span>[[user:age]]</span>
-            <strong>{age}</strong>
-            <!-- ENDIF age -->
         </div>
     </div>
 </div>
