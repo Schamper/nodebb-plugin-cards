@@ -34,7 +34,7 @@
 			href = regex.exec(target.attr('href'));
 
 		// Check if it's a valid link
-		if (href && (!utils.invalidLatinChars.test(href[2]) || !utils.invalidUnicodeChars.test(href[2]))) {
+		if (href && href[1] && href[2]) {
 			// Destroy tooltips added by NodeBB
 			if (target.children('img')) {
 				target.children('img').tooltip('destroy');
