@@ -66,16 +66,16 @@
 	}
 
 	function toggleFollow($card, type, uid, username) {
-		socket.emit('user.' + type, {
-			uid: uid
-		}, function(err) {
-			if (err) {
-				return app.alertError(err.message);
-			}
+		require(['api', 'alerts'], function (api, alerts) {
+			api[type === 'follow' ? 'put' : 'del']('/users/' + uid + '/follow', undefined, function (err) {
+				if (err) {
+					return alerts.error(err);
+				}
 
-			$('[component="account/follow"]').toggleClass('hide', type === 'follow');
-			$('[component="account/unfollow"]').toggleClass('hide', type === 'unfollow');
-			app.alertSuccess('[[global:alert.' + type + ', ' + username + ']]');
+				$('[component="account/follow"]').toggleClass('hide', type === 'follow');
+				$('[component="account/unfollow"]').toggleClass('hide', type === 'unfollow');
+				alerts.success('[[global:alert.' + type + ', ' + username + ']]');
+			});
 		});
 		return false;
 	}
