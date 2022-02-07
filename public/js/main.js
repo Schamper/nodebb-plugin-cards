@@ -82,7 +82,7 @@
 
 	function createCard(target, url) {
 		return setTimeout(function() {
-			var api = '/api' + url;
+			var api = config.relative_path + '/api' + url;
 			$.ajax({
 				url: api,
 				success: function(result) {
