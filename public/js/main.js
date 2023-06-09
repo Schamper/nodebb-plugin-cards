@@ -120,7 +120,6 @@
 
 							// Bind exit events
 							$('html').off(exitEvent).on(exitEvent, function() {
-								console.log('existe', currentCard);
 								if (currentCard) {
 									destroyCard(currentCard, true);
 								}
