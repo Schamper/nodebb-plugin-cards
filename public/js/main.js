@@ -3,11 +3,10 @@
 /* globals app, utils, $ */
 
 (function(window) {
-	var delay, targetCard, currentCard, destroyDelay,
+	var delay, targetCard, currentCard,
 		events = 'mouseenter.card mouseleave.card',
 		exitEvent = 'click.card',
 		selector = 'a[href*="/user/"]:not(.profile-card a)',
-		exitSelector = 'body:not(".profile-card")',
 		regex = /(\/user\/([^/]+))(?:\/$|$)/;
 
 	$(document).ready(function() {
@@ -37,7 +36,7 @@
 		if (href && href[1] && href[2]) {
 			// Destroy tooltips added by NodeBB
 			if (target.children('img')) {
-				target.children('img').tooltip('destroy');
+				target.children('img').tooltip('dispose');
 			}
 
 			// If it's a mouseenter event, set a timeout to create a new card
@@ -45,19 +44,6 @@
 				delay = createCard(target, href[1]);
 				targetCard = target;
 			} else {
-				// Otherwise add some handlers for destroying a card
-				if (target.is(currentCard)) {
-					destroyDelay = destroyCard(target);
-
-					target.data('bs.popover')['$tip'].off(events).on(events, function(e) {
-						if (e.type === "mouseenter") {
-							clearTimeout(destroyDelay);
-						} else {
-							destroyDelay = destroyCard(target);
-						}
-					});
-				}
-
 				// Also clear the timeout for creating a new card
 				clearTimeout(delay);
 				targetCard = null;
@@ -77,7 +63,6 @@
 				alerts.success('[[global:alert.' + type + ', ' + username + ']]');
 			});
 		});
-		return false;
 	}
 
 	function createCard(target, url) {
@@ -91,28 +76,32 @@
 						if (!target.is(currentCard) && target.is(targetCard)) {
 							// If there's an existing card, destroy it
 							if (currentCard) {
-								destroyCard(currentCard);
+								destroyCard(currentCard, true);
 							}
 
 							// Bind chat button
 							cardHTML.find('[component="account/chat"]').on('click', function() {
-								socket.emit('modules.chats.hasPrivateChat', result.uid, function(err, roomId) {
+								socket.emit('modules.chats.hasPrivateChat', result.uid, async function (err, roomId) {
 									if (err) {
 										return app.alertError(err.message);
 									}
+									const chat = await app.require('chat');
 									if (roomId) {
-										app.openChat(roomId);
+										chat.openChat(roomId);
 									} else {
-										app.newChat(result.uid);
+										chat.newChat(result.uid);
 									}
 								});
+								return false;
 							});
 							// Bind follow and unfollow
 							cardHTML.find('[component="account/follow"]').on('click', function(){
 								toggleFollow(cardHTML, 'follow', result.uid, result.username);
+								return false;
 							});
 							cardHTML.find('[component="account/unfollow"]').on('click', function(){
 								toggleFollow(cardHTML, 'unfollow', result.uid, result.username);
+								return false;
 							});
 
 							// Create card
@@ -122,17 +111,18 @@
 								placement: calculatePopoverPosition(target),
 								trigger: 'manual',
 								container: 'body'
-							}).popover('show').data('bs.popover')['$tip'].css('z-index', 1000000);
+							}).popover('show');
 
 							// Bind some other stuff
 							$('.profile-card .timeago').timeago();
-							$('.card-fab button').dropdown();
+
 							utils.makeNumbersHumanReadable($('.profile-card .human-readable-number'));
 
 							// Bind exit events
 							$('html').off(exitEvent).on(exitEvent, function() {
+								console.log('existe', currentCard);
 								if (currentCard) {
-									destroyCard(currentCard);
+									destroyCard(currentCard, true);
 								}
 							});
 
@@ -152,11 +142,11 @@
 
 	function destroyCard(target, instantly) {
 		if (instantly) {
-			target.popover('destroy');
+			target.popover('dispose');
 			currentCard = null;
 		} else {
 			return setTimeout(function() {
-				target.popover('destroy');
+				target.popover('dispose');
 				currentCard = null;
 			}, 500);
 		}

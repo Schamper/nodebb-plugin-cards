@@ -8,8 +8,8 @@
 	"staticDirs": {
 		"public": "public"
 	},
-	"less": [
-		"public/less/style.less"
+	"scss": [
+		"public/scss/style.scss"
 	],
 	"scripts": [
 		"public/js/main.js"
