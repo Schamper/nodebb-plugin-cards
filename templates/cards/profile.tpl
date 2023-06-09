@@ -13,10 +13,12 @@
                 <ul class="dropdown-menu dropdown-menu-end p-1">
                     <!-- IF !isSelf -->
                     <!-- IF !config.disableChat -->
+                    <!-- IF hasPrivateChat -->
                     <li>
                         <a class="dropdown-item rounded-1" component="account/chat" href="#">[[user:chat_with, {username}]]</a>
                     </li>
                     <li class="dropdown-divider"></li>
+                    <!-- ENDIF hasPrivateChat -->
                     <!-- ENDIF !config.disableChat -->
                     <!-- ENDIF !isSelf -->
                     <li>
