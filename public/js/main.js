@@ -110,7 +110,8 @@
 								content: cardHTML,
 								placement: calculatePopoverPosition(target),
 								trigger: 'manual',
-								container: 'body'
+								container: 'body',
+								template: '<div class="popover" role="tooltip"><div class="popover-arrow"></div><div class="popover-body"></div></div>'
 							}).popover('show');
 
 							// Bind some other stuff
