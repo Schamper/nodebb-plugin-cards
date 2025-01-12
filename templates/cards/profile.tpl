@@ -15,7 +15,7 @@
                     <!-- IF !config.disableChat -->
                     <!-- IF hasPrivateChat -->
                     <li>
-                        <a class="dropdown-item rounded-1" component="account/chat" href="#">[[user:chat_with, {username}]]</a>
+                        <a class="dropdown-item rounded-1" component="account/chat" href="#">[[user:chat-with, {username}]]</a>
                     </li>
                     <li class="dropdown-divider"></li>
                     <!-- ENDIF hasPrivateChat -->
