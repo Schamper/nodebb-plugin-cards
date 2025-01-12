@@ -81,7 +81,7 @@
         <div class="text-center profile-meta">
             <!-- IF email -->
             <span><i class="fa fa-envelope-open-o" aria-hidden="true"></i></span>
-            <strong><i class="fa fa-eye-slash {emailClass}" title="[[user:email_hidden]]"></i> {email}</strong>
+            <strong><i class="fa fa-eye-slash {emailClass}" title="[[user:email-hidden]]"></i> {email}</strong>
             <br/>
             <!-- ENDIF email -->
 
