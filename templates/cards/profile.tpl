@@ -15,7 +15,7 @@
                     <!-- IF !config.disableChat -->
                     <!-- IF hasPrivateChat -->
                     <li>
-                        <a class="dropdown-item rounded-1" component="account/chat" href="#">[[user:chat_with, {username}]]</a>
+                        <a class="dropdown-item rounded-1" component="account/chat" href="#">[[user:chat-with, {username}]]</a>
                     </li>
                     <li class="dropdown-divider"></li>
                     <!-- ENDIF hasPrivateChat -->
@@ -81,7 +81,7 @@
         <div class="text-center profile-meta">
             <!-- IF email -->
             <span><i class="fa fa-envelope-open-o" aria-hidden="true"></i></span>
-            <strong><i class="fa fa-eye-slash {emailClass}" title="[[user:email_hidden]]"></i> {email}</strong>
+            <strong><i class="fa fa-eye-slash {emailClass}" title="[[user:email-hidden]]"></i> {email}</strong>
             <br/>
             <!-- ENDIF email -->
 
