@@ -3,12 +3,12 @@
         <div class="profile-card-cover rounded-top" style="background-image: url({cover:url}); background-position: {cover:position};">
             <div class="profile-card-avatar">
                 <a href="{config.relative_path}/user/{userslug}">
-                    {buildAvatar(@value, "50px", true)}
+                    {{buildAvatar(@value, "50px", true)}}
                 </a>
             </div>
             <div class="dropdown card-fab">
-                <button type="button" class="btn btn-light btn-sm rounded-circle fab dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-ellipsis-v"></i>
+                <button type="button" class="btn btn-light btn-sm rounded-circle dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa-solid fa-ellipsis-vertical fa-width-auto"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end p-1">
                     <!-- IF !isSelf -->
@@ -33,10 +33,12 @@
                     <li><a class="dropdown-item rounded-1" href="{config.relative_path}/user/{userslug}/posts">[[global:posts]]</a></li>
                     <li><a class="dropdown-item rounded-1" href="{config.relative_path}/user/{userslug}/groups">[[global:header.groups]]</a></li>
 
-                    <!-- BEGIN profile_links -->
+                    {{{ each profile_links }}}
+                    {{{ if (./id == "info")}}}
                     <li class="dropdown-divider"></li>
-                    <li id="{profile_links.id}" class="plugin-link <!-- IF profile_links.public -->public<!-- ELSE -->private<!-- ENDIF profile_links.public -->"><a class="dropdown-item rounded-1" href="{config.relative_path}/user/{userslug}/{profile_links.route}"><i class="fa fa-fw {profile_links.icon}"></i> {profile_links.name}</a></li>
-                    <!-- END profile_links -->
+                    <li id="{./id}" class="plugin-link {{{ if ./public }}}public{{{ else }}}private{{{ end }}}"><a class="dropdown-item rounded-1" href="{config.relative_path}/user/{userslug}/{./route}"><i class="fa fa-fw {./icon}"></i> {tx(./name)}</a></li>
+                    {{{ end }}}
+                    {{{ end }}}
                 </ul>
             </div>
         </div>
