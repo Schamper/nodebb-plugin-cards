@@ -23,6 +23,6 @@
 	},
 	"dependencies": {},
 	"nbbpm": {
-		"compatibility": "^4.0.0"
+		"compatibility": "^4.14.0"
 	}
 }

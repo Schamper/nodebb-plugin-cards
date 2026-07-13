@@ -83,7 +83,9 @@
 							cardHTML.find('[component="account/chat"]').on('click', function() {
 								socket.emit('modules.chats.hasPrivateChat', result.uid, async function (err, roomId) {
 									if (err) {
-										return app.alertError(err.message);
+										require(['alerts'], function (alerts) {
+											alerts.error(err.message);
+										});
 									}
 									const chat = await app.require('chat');
 									if (roomId) {
