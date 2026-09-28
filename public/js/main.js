@@ -32,6 +32,14 @@
 		var target = $(e.currentTarget),
 			href = regex.exec(target.attr('href'));
 
+		// Only handle profile links on this forum. A link to another forum
+		// (e.g. [@user](https://other-forum/user/slug)) resolves to a different
+		// hostname, and the card would otherwise be fetched from the local API,
+		// showing the wrong user or nothing at all.
+		if (e.currentTarget.hostname && e.currentTarget.hostname !== window.location.hostname) {
+			return;
+		}
+
 		// Check if it's a valid link
 		if (href && href[1] && href[2]) {
 			// Destroy tooltips added by NodeBB
