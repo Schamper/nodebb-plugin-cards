@@ -81,19 +81,23 @@
 
 							// Bind chat button
 							cardHTML.find('[component="account/chat"]').on('click', function() {
-								socket.emit('modules.chats.hasPrivateChat', result.uid, async function (err, roomId) {
-									if (err) {
-										require(['alerts'], function (alerts) {
-											alerts.error(err.message);
-										});
+								// The modules.chats.hasPrivateChat socket method was removed in NodeBB 4.14;
+								// use the same REST call the core profile header uses.
+								(async function () {
+									try {
+										const api = await app.require('api');
+										const { roomId } = await api.get('/users/' + encodeURIComponent(result.uid) + '/chat');
+										const chat = await app.require('chat');
+										if (roomId) {
+											chat.openChat(roomId);
+										} else {
+											chat.newChat(result.uid);
+										}
+									} catch (err) {
+										const alerts = await app.require('alerts');
+										alerts.error(err);
 									}
-									const chat = await app.require('chat');
-									if (roomId) {
-										chat.openChat(roomId);
-									} else {
-										chat.newChat(result.uid);
-									}
-								});
+								})();
 								return false;
 							});
 							// Bind follow and unfollow
